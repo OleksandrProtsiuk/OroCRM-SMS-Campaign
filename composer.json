@@ -13,5 +13,10 @@
             "email": "support@diglin.com"
         }
     ],
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Diglin\\Bundle\\SmsCampaignBundle": ""
+        }
+    }
 }
