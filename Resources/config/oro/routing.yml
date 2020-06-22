@@ -1,0 +1,4 @@
+diglin_sms_campaign_bundle:
+    resource:     "@SmsCampaignBundle/Controller"
+    type:         annotation
+    prefix:       /

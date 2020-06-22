@@ -1,0 +1,94 @@
+services:
+
+    diglin_sms_campaign.sms_campaign.form.type:
+        class: Diglin\Bundle\SmsCampaignBundle\Form\Type\SmsCampaignType
+        calls:
+            - [addSubscriber,  ["@diglin_sms_campaign.form.subscriber.transport_settings"]]
+        tags:
+            - { name: form.type, alias: diglin_sms_campaign }
+        arguments:
+            - "@diglin_sms_campaign.sms_transport.provider"
+
+    diglin_sms_campaign.sms_campaign.form:
+        class: Symfony\Component\Form\Form
+        factory: ['@form.factory', createNamed]
+        arguments:
+            - "diglin_sms_campaign"
+            - Diglin\Bundle\SmsCampaignBundle\Form\Type\SmsCampaignType
+
+    diglin_sms_campaign.form.type.sms_transport_select:
+        class: Diglin\Bundle\SmsCampaignBundle\Form\Type\SmsTransportSelectType
+        arguments:
+            - "@diglin_sms_campaign.sms_transport.provider"
+        tags:
+            - { name: form.type, alias: "diglin_sms_campaign_sms_transport_select" }
+
+    diglin_sms_campaign.form.type.integration_select:
+        class: Diglin\Bundle\SmsCampaignBundle\Form\Type\IntegrationSelectType
+        arguments:
+            - "@doctrine"
+            - "@oro_security.acl_helper"
+        tags:
+            - { name: form.type, alias: "diglin_sms_integration_select" }
+
+    diglin_sms_campaign.transport.sms:
+        class: Diglin\Bundle\SmsCampaignBundle\Transport\SmsTransport
+        calls:
+            - [setConnectorsTypeRegistry,  ["@oro_integration.manager.types_registry"]]
+        arguments:
+            - "@oro_entity.doctrine_helper"
+        tags:
+            - { name: "diglin_sms_campaign.sms_transport" }
+
+    diglin_sms_campaign.sms_campaign.statistics_connector:
+        class: Diglin\Bundle\SmsCampaignBundle\Model\SmsCampaignStatisticsConnector
+        arguments:
+            - "@oro_marketing_list.model.marketing_list_item_connector"
+            - "@oro_entity.doctrine_helper"
+        calls:
+            - [setEntityName, ['Diglin\Bundle\SmsCampaignBundle\Entity\SmsCampaignStatistics']]
+
+    diglin_sms_campaign.sms_campaign.sender:
+        class: Diglin\Bundle\SmsCampaignBundle\Model\SmsCampaignSender
+        arguments:
+            - "@oro_marketing_list.provider.marketing_list"
+            - "@oro_config.user"
+            - "@diglin_sms_campaign.sms_campaign.statistics_connector"
+            - "@oro_marketing_list.provider.contact_information_fields"
+            - "@doctrine"
+            - "@diglin_sms_campaign.sms_transport.provider"
+        calls:
+            - [setLogger,  ["@logger"]]
+            - [setValidator,  ["@validator"]]
+
+    diglin_sms_campaign.sms_transport.provider:
+        class: Diglin\Bundle\SmsCampaignBundle\Provider\SmsTransportProvider
+
+    diglin_sms_campaign.sms_campaign.sender.builder:
+        class: Diglin\Bundle\SmsCampaignBundle\Model\SmsCampaignSenderBuilder
+        arguments:
+            - "@diglin_sms_campaign.sms_campaign.sender"
+
+    Diglin\Bundle\SmsCampaignBundle\Model\SmsCampaignSenderBuilder:
+        alias: diglin_sms_campaign.sms_campaign.sender.builder
+
+    diglin_sms_campaign.form.type.internal_transport_settings:
+        class: Diglin\Bundle\SmsCampaignBundle\Form\Type\SmsTransportSettingsType
+        arguments:
+            - "@doctrine"
+        tags:
+            - { name: form.type, alias: "diglin_sms_campaign_sms_transport_settings" }
+
+    diglin_sms_campaign.listener.sms_campaign_statistic:
+        class: Diglin\Bundle\SmsCampaignBundle\EventListener\CampaignStatisticDatagridListener
+        arguments:
+            - "@oro_marketing_list.model.helper"
+            - "@doctrine"
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.pre, method: onPreBuild, priority: 300 }
+
+    diglin_sms_campaign.form.subscriber.transport_settings:
+        class: Diglin\Bundle\SmsCampaignBundle\Form\EventListener\TransportSettingsListener
+        arguments:
+            - "@diglin_sms_campaign.sms_transport.provider"
+            - "@oro_entity.doctrine_helper"

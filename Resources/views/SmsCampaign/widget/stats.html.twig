@@ -1,0 +1,9 @@
+{% import 'OroUIBundle::macros.html.twig' as ui %}
+
+<div class="widget-content">
+    <div class="row-fluid form-horizontal">
+        <div class="responsive-block">
+            {{ ui.renderProperty('oro.campaign.emailcampaign.stats.bounce.label'|trans, stats.bounce|oro_format_decimal) }}
+        </div>
+    </div>
+</div>

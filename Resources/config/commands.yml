@@ -1,0 +1,11 @@
+services:
+    _defaults:
+        public: false
+
+    Diglin\Bundle\SmsCampaignBundle\Command\SendSmsCampaignsCommand:
+        arguments:
+            - '@doctrine'
+            - '@oro_featuretoggle.checker.feature_checker'
+            - '@diglin_sms_campaign.sms_campaign.sender.builder'
+        tags:
+            - { name: console.command }

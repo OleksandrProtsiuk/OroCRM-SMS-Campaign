@@ -1,0 +1,9 @@
+features:
+    campaign:
+        routes:
+            # campaign routes
+            - 'diglin_sms_campaign_index'
+            - 'diglin_sms_campaign_create'
+            - 'diglin_sms_campaign_update'
+            - 'diglin_sms_campaign_view'
+            - 'diglin_sms_campaign_send'

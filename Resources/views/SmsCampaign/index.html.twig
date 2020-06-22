@@ -1,0 +1,18 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set pageTitle = 'diglin.campaign.smscampaign.entity_plural_label'|trans %}
+{% set gridName = 'diglin-sms-campaign-grid' %}
+
+{% block navButtons %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    <div class="btn-group">
+        {% if is_granted('diglin_sms_campaign_create') %}
+            {{ UI.addButton({
+                'path': path('diglin_sms_campaign_create'),
+                'entity_label': 'diglin.campaign.smscampaign.entity_label'|trans
+            }) }}
+        {% endif %}
+    </div>
+{% endblock %}

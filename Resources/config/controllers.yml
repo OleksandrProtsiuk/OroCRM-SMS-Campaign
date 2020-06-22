@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        public: true
+
+    Diglin\Bundle\SmsCampaignBundle\Controller\SmsCampaignController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }

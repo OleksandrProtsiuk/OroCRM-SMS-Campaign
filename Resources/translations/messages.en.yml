@@ -1,0 +1,29 @@
+diglin:
+    smscampaign:
+        entity_plural_label: SMS Campaigns
+        entity_label: SMS Campaign
+        owner.label: Owner
+    campaign:
+        smscampaign:
+            entity_description:  Marketing SMS campaigns
+            entity_label:        SMS Campaign
+            entity_plural_label: SMS Campaigns
+
+            controller:
+                saved.message: "SMS campaign saved"
+                sent: "SMS campaign was sent"
+                send_disallowed: "SMS campaign could not be sent. Please, check that all settings are correct."
+
+            block:
+                sms_settings: SMS Settings
+
+            text:
+                label: Text
+
+            transport:
+                sms: SMS
+
+            integration:
+                label: SMS integration
+                select:
+                    placeholder: Select SMS integration...
