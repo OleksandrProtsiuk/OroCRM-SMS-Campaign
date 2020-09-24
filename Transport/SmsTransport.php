@@ -11,16 +11,15 @@ namespace Diglin\Bundle\SmsCampaignBundle\Transport;
 
 use Diglin\Bundle\SmsCampaignBundle\Entity\SmsCampaign;
 use Diglin\Bundle\SmsCampaignBundle\Form\Type\SmsTransportSettingsType;
-use Diglin\Bundle\TwilioOroBundle\Entity\TwilioTransportSettings;
-use Diglin\Bundle\TwilioOroBundle\Integration\Transport\TwilioTransport;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Manager\TypesRegistry;
+use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
 
 /**
  * Implements the transport to send campaigns SMS.
  */
-class SmsTransport implements TransportInterface
+class SmsTransport implements SmsTransportInterface
 {
     const NAME = 'sms';
 
@@ -59,18 +58,16 @@ class SmsTransport implements TransportInterface
     {
         /** @var Channel $channel */
         $channel = $campaign->getTransportSettings()->getChannel();
-
-        /** @var TwilioTransportSettings $transportSettings */
         $transportSettings = $channel->getTransport();
 
-        /** @var TwilioTransport $transport */
+        /** @var TransportInterface $transport */
         $transport = $this->typeRegistry->getTransportTypeBySettingEntity($transportSettings, $channel->getType());
         $transport->init($transportSettings);
 
-        foreach ($to as $recipientNumber) {
-            // @todo number transformation? e.g. change 0041 to +41?
-            // @todo error handling - what if sending fails, e.g. wrong Twilio configuration
-            $transport->sendSms($recipientNumber, $campaign->getText());
+        if ($transport instanceof SendSmsInterface || method_exists($transport, 'sendSms')) {
+            foreach ($to as $recipientNumber) {
+                $transport->sendSms($recipientNumber, $campaign->getText());
+            }
         }
     }
 

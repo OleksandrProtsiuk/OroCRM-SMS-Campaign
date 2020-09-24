@@ -9,22 +9,20 @@
 
 namespace Diglin\Bundle\SmsCampaignBundle\Provider;
 
-use Diglin\Bundle\SmsCampaignBundle\Transport\TransportInterface;
+use Diglin\Bundle\SmsCampaignBundle\Transport\SmsTransportInterface;
 use Oro\Bundle\CampaignBundle\Transport\VisibilityTransportInterface;
 
 class SmsTransportProvider
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $transports = [];
 
-    public function addTransport(TransportInterface $transport)
+    public function addTransport(SmsTransportInterface $transport)
     {
         $this->transports[$transport->getName()] = $transport;
     }
 
-    public function getTransportByName(string $name): TransportInterface
+    public function getTransportByName(string $name): SmsTransportInterface
     {
         if ($this->hasTransport($name)) {
             return $this->transports[$name];
@@ -51,14 +49,14 @@ class SmsTransportProvider
     }
 
     /**
-     * @return TransportInterface[]
+     * @return SmsTransportInterface[]
      */
     public function getTransports(): array
     {
         return $this->transports;
     }
 
-    protected function isVisibleInForm(TransportInterface $transport): bool
+    protected function isVisibleInForm(SmsTransportInterface $transport): bool
     {
         return !$transport instanceof VisibilityTransportInterface || $transport->isVisibleInForm();
     }

@@ -11,7 +11,7 @@ namespace Diglin\Bundle\SmsCampaignBundle\Form\EventListener;
 
 use Diglin\Bundle\SmsCampaignBundle\Entity\SmsCampaign;
 use Diglin\Bundle\SmsCampaignBundle\Provider\SmsTransportProvider;
-use Diglin\Bundle\SmsCampaignBundle\Transport\TransportInterface;
+use Diglin\Bundle\SmsCampaignBundle\Transport\SmsTransportInterface;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -71,7 +71,7 @@ class TransportSettingsListener implements EventSubscriberInterface
         $event->setData($data);
     }
 
-    protected function getSelectedTransport(?string $selectedTransportName): ?TransportInterface
+    protected function getSelectedTransport(?string $selectedTransportName): ?SmsTransportInterface
     {
         if ($selectedTransportName) {
             $selectedTransport = $this->smsTransportProvider->getTransportByName($selectedTransportName);
@@ -83,7 +83,7 @@ class TransportSettingsListener implements EventSubscriberInterface
         return $selectedTransport;
     }
 
-    protected function addTransportSettingsForm(TransportInterface $selectedTransport, FormInterface $form)
+    protected function addTransportSettingsForm(SmsTransportInterface $selectedTransport, FormInterface $form)
     {
         if ($selectedTransport) {
             $transportSettingsFormType = $selectedTransport->getSettingsFormType();

@@ -11,6 +11,7 @@ namespace Diglin\Bundle\SmsCampaignBundle\Entity\Repository;
 
 use Diglin\Bundle\SmsCampaignBundle\Entity\SmsCampaign;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
@@ -35,9 +36,9 @@ class SmsCampaignRepository extends EntityRepository
             ->andWhere($qb->expr()->eq('sms_campaign.schedule', ':scheduleType'))
             ->andWhere($qb->expr()->isNotNull('sms_campaign.scheduledFor'))
             ->andWhere($qb->expr()->lte('sms_campaign.scheduledFor', ':currentTimestamp'))
-            ->setParameter('sent', false, Type::BOOLEAN)
-            ->setParameter('scheduleType', SmsCampaign::SCHEDULE_DEFERRED, Type::STRING)
-            ->setParameter('currentTimestamp', new \DateTime('now', new \DateTimeZone('UTC')), Type::DATETIME);
+            ->setParameter('sent', false, Types::BOOLEAN)
+            ->setParameter('scheduleType', SmsCampaign::SCHEDULE_DEFERRED, Types::STRING)
+            ->setParameter('currentTimestamp', new \DateTime('now', new \DateTimeZone('UTC')), Types::DATETIME_MUTABLE);
 
         return $qb;
     }

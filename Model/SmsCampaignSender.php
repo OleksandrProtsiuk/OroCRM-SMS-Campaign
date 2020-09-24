@@ -11,7 +11,7 @@ namespace Diglin\Bundle\SmsCampaignBundle\Model;
 
 use Diglin\Bundle\SmsCampaignBundle\Entity\SmsCampaign;
 use Diglin\Bundle\SmsCampaignBundle\Provider\SmsTransportProvider;
-use Diglin\Bundle\SmsCampaignBundle\Transport\TransportInterface;
+use Diglin\Bundle\SmsCampaignBundle\Transport\SmsTransportInterface;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
@@ -62,7 +62,7 @@ class SmsCampaignSender
     protected $logger;
 
     /**
-     * @var TransportInterface
+     * @var SmsTransportInterface
      */
     protected $transport;
 
