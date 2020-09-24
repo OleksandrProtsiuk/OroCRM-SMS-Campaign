@@ -3,13 +3,16 @@
     "description": "Support to send SMS Campaign from OroCRM",
     "require": {
         "php": ">=7.1",
-        "oro/crm": "4.1.*",
-        "oro/marketing": "4.1.*"
+        "oro/marketing": "^4.1.*"
     },
     "license": "OSL-3.0",
     "authors": [
         {
             "name": "Louis Bataillard",
+            "email": "support@diglin.com"
+        },
+        {
+            "name": "Sylvain Rayé",
             "email": "support@diglin.com"
         }
     ],
