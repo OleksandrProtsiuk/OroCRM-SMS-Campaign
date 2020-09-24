@@ -21,10 +21,22 @@ You can create your own, the bundle is enough flexible to allow you to support s
 ## Usage
 
 - Create a Marketing List with a list of people with a phone number following your criteria
+
+  ![OroCRM SMS Campaign - SMS Campaign creation](/Users/sraye/Sites/git/Diglin_SmsCampaignBundle/doc/OroCRM SMS Campaign - SMS Campaign creation.png)
+
 - Create a SMS Campaign via the menu Marketing > SMS Campaigns
+
+  ![OroCRM SMS Campaign - Menu](/Users/sraye/Sites/git/Diglin_SmsCampaignBundle/doc/OroCRM SMS Campaign - Menu.png)
+
+  ![OroCRM SMS Campaign - Marketing List creation](/Users/sraye/Sites/git/Diglin_SmsCampaignBundle/doc/OroCRM SMS Campaign - Marketing List creation.png)
+
 - Enter the required information like: name, select the previously created Marketing List, a schedule, a text to send
+
 - Select the SMS settings. If SMS Integration list is empty, it means that no SMS Transport has been installed or configured. See the pre-requirement.
+
 - Once you saved your changes, you can send manually the SMS by clicking on the button on the top right on the view page of your SMS campaign or wait for the schedule if this one is configured.
+
+  ![OroCRM SMS Campaign - SMS Campaign sending](/Users/sraye/Sites/git/Diglin_SmsCampaignBundle/doc/OroCRM SMS Campaign - SMS Campaign sending.png)
 
 ## License
 
