@@ -2,8 +2,8 @@
     "name": "diglin/orocrm-sms-campaign",
     "description": "Support to send SMS Campaign from OroCRM",
     "require": {
-        "php": ">=7.1",
-        "oro/marketing": "^4.1"
+        "php": ">=7.3",
+        "oro/marketing": "^4.1|^4.2"
     },
     "license": "OSL-3.0",
     "authors": [
