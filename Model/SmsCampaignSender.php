@@ -133,6 +133,7 @@ class SmsCampaignSender
                 ContactInformationFieldsProvider::CONTACT_INFORMATION_SCOPE_PHONE
             );
 
+        $toSent = [];
         foreach ($iterator as $item) {
             $entity = array_shift($item);
 
@@ -145,6 +146,10 @@ class SmsCampaignSender
             }
             $to = array_filter(array_unique(array_merge($toFromFields, $toFromEntity)));
 
+            if (in_array($to, $toSent)) {
+                continue;
+            }
+
             try {
                 $manager->beginTransaction();
 
@@ -155,9 +160,10 @@ class SmsCampaignSender
                     $to
                 );
 
-                $statisticsRecord = $this->statisticsConnector->getStatisticsRecord($this->smsCampaign, $entity);
+                $toSent[] = $to;
 
                 // Mark marketing list item as contacted
+                $statisticsRecord = $this->statisticsConnector->getStatisticsRecord($this->smsCampaign, $entity);
                 $statisticsRecord->getMarketingListItem()->contact();
 
                 $manager->flush($statisticsRecord);
