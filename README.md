@@ -15,7 +15,12 @@ You can create your own, the bundle is enough flexible to allow you to support s
 
 ## Requirement
 
-- OroCRM 4.x
+Compatibility:
+
+| oroCRM 4.1.* | oroCRM 4.1.* |
+|--------------|--------------|
+| <=1.1.1      | ^1.2.*       |
+
 - An integration supporting SMS Transport must be installed and configured. Like Twilio, see [Supported SMS Transport](#Supported SMS Transport)
 
 ## Usage
