@@ -12,7 +12,7 @@ namespace Diglin\Bundle\SmsCampaignBundle\Command;
 use Diglin\Bundle\SmsCampaignBundle\Entity\Repository\SmsCampaignRepository;
 use Diglin\Bundle\SmsCampaignBundle\Entity\SmsCampaign;
 use Diglin\Bundle\SmsCampaignBundle\Model\SmsCampaignSenderBuilder;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
 use Symfony\Component\Console\Command\Command;

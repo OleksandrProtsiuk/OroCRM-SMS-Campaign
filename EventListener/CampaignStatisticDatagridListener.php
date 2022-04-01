@@ -9,7 +9,7 @@
 
 namespace Diglin\Bundle\SmsCampaignBundle\EventListener;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\DataGridBundle\Datagrid\ParameterBag;
 use Oro\Bundle\DataGridBundle\Event\PreBuild;
 use Oro\Bundle\DataGridBundle\EventListener\MixinListener;
