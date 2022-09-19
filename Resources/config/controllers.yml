@@ -3,7 +3,15 @@ services:
         public: true
 
     Diglin\Bundle\SmsCampaignBundle\Controller\SmsCampaignController:
+        arguments:
+            - '@form.factory'
+            - '@request_stack'
+            - '@translator'
+            - '@oro_ui.router'
+            - '@diglin_sms_campaign.sms_campaign.sender.builder'
         calls:
             - [setContainer, ['@Psr\Container\ContainerInterface']]
+            - [setValidator, ['@validator']]
+            - [setManagerRegistry, ["@doctrine"]]
         tags:
             - { name: container.service_subscriber }
