@@ -102,7 +102,7 @@ class SmsCampaignController extends AbstractController
      * Create SMS campaign
      *
      * @Route("/create", name="diglin_sms_campaign_create")
-     * @Template("SmsCampaignBundle:SmsCampaign:update.html.twig")
+     * @Template("@SmsCampaign/SmsCampaign/update.html.twig")
      * @Acl(
      *      id="diglin_sms_campaign_create",
      *      type="entity",
