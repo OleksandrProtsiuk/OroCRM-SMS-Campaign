@@ -1,5 +1,5 @@
 {% extends '@OroUI/actions/update.html.twig' %}
-{% form_theme form with ['OroFormBundle:Form:fields.html.twig'] %}
+{% form_theme form with ['@OroForm/Form/fields.html.twig'] %}
 
 {% set entityId = form.vars.value.id %}
 {% oro_title_set({params : {"%entity.name%": entity.name, "%entityName%": 'oro.campaign.emailcampaign.entity_label'|trans }}) %}
