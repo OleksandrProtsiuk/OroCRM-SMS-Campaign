@@ -3,7 +3,7 @@
     "description": "Support to send SMS Campaign from OroCRM",
     "require": {
         "php": ">=8.0",
-        "oro/marketing": "5.*"
+        "oro/marketing": "^5.0"
     },
     "license": "OSL-3.0",
     "authors": [
