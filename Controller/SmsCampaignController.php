@@ -13,6 +13,7 @@ use Diglin\Bundle\SmsCampaignBundle\Entity\SmsCampaign;
 use Diglin\Bundle\SmsCampaignBundle\Form\Handler\SmsCampaignHandler;
 use Diglin\Bundle\SmsCampaignBundle\Form\Type\SmsCampaignType;
 use Diglin\Bundle\SmsCampaignBundle\Model\SmsCampaignSenderBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\UIBundle\Route\Router;
@@ -34,6 +35,38 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class SmsCampaignController extends AbstractController
 {
+    private FormFactoryInterface $formFactory;
+    private RequestStack $requestStack;
+    private TranslatorInterface $translator;
+    private Router $router;
+    private ManagerRegistry $managerRegistry;
+    private ValidatorInterface $validator;
+    private SmsCampaignSenderBuilder $smsCampaignSenderBuilder;
+
+    public function __construct(
+        FormFactoryInterface $formFactory,
+        RequestStack $requestStack,
+        TranslatorInterface $translator,
+        Router $router,
+        SmsCampaignSenderBuilder $smsCampaignSenderBuilder
+    ) {
+        $this->formFactory = $formFactory;
+        $this->requestStack = $requestStack;
+        $this->translator = $translator;
+        $this->router = $router;
+        $this->smsCampaignSenderBuilder = $smsCampaignSenderBuilder;
+    }
+
+    public function setManagerRegistry(ManagerRegistry $registry)
+    {
+        $this->managerRegistry = $registry;
+    }
+
+    public function setValidator(ValidatorInterface $validator): void
+    {
+        $this->validator = $validator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -69,7 +102,7 @@ class SmsCampaignController extends AbstractController
      * Create SMS campaign
      *
      * @Route("/create", name="diglin_sms_campaign_create")
-     * @Template("SmsCampaignBundle:SmsCampaign:update.html.twig")
+     * @Template("@SmsCampaign/SmsCampaign/update.html.twig")
      * @Acl(
      *      id="diglin_sms_campaign_create",
      *      type="entity",
@@ -91,27 +124,25 @@ class SmsCampaignController extends AbstractController
      */
     protected function update(SmsCampaign $entity)
     {
-        $factory = $this->get(FormFactoryInterface::class);
-        $form = $factory->createNamed('diglin_sms_campaign', SmsCampaignType::class);
+        $form = $this->formFactory->createNamed('diglin_sms_campaign', SmsCampaignType::class);
 
-        $requestStack = $this->get(RequestStack::class);
-        $handler = new SmsCampaignHandler($requestStack, $form, $this->getDoctrine());
+        $handler = new SmsCampaignHandler($this->requestStack, $form, $this->managerRegistry);
 
         if ($handler->process($entity)) {
-            $this->get(SessionInterface::class)->getFlashBag()->add(
+            $this->requestStack->getSession()->getFlashBag()->add(
                 'success',
-                $this->get(TranslatorInterface::class)->trans('diglin.campaign.smscampaign.controller.saved.message')
+                $this->translator->trans('diglin.campaign.smscampaign.controller.saved.message')
             );
 
-            return $this->get(Router::class)->redirect($entity);
+            return $this->router->redirect($entity);
         }
 
-        $isUpdateOnly = $requestStack->getCurrentRequest()->get(SmsCampaignHandler::UPDATE_MARKER, false);
+        $isUpdateOnly = $this->requestStack->getCurrentRequest()->get(SmsCampaignHandler::UPDATE_MARKER, false);
 
         // substitute submitted form with new not submitted instance to ignore validation errors
         // on form after transport field was changed
         if ($isUpdateOnly) {
-            $form = $factory->createNamed('diglin_sms_campaign', SmsCampaignType::class, $form->getData());
+            $form = $this->formFactory->createNamed('diglin_sms_campaign', SmsCampaignType::class, $form->getData());
         }
 
         return [
@@ -159,7 +190,7 @@ class SmsCampaignController extends AbstractController
      */
     public function viewAction(SmsCampaign $entity)
     {
-        $stats = $this->getDoctrine()
+        $stats = $this->managerRegistry
             ->getRepository("SmsCampaignBundle:SmsCampaignStatistics")
             ->getSmsCampaignStats($entity);
 
@@ -185,7 +216,7 @@ class SmsCampaignController extends AbstractController
         if ($sendAllowed) {
             $transportSettings = $entity->getTransportSettings();
             if ($transportSettings) {
-                $validator = $this->get(ValidatorInterface::class);
+                $validator = $this->validator;
                 $errors = $validator->validate($transportSettings);
                 $sendAllowed = count($errors) === 0;
             }
@@ -212,18 +243,18 @@ class SmsCampaignController extends AbstractController
     public function sendAction(SmsCampaign $entity)
     {
         if ($this->isManualSendAllowed($entity)) {
-            $senderFactory = $this->get(SmsCampaignSenderBuilder::class);
+            $senderFactory = $this->smsCampaignSenderBuilder;
             $sender = $senderFactory->getSender($entity);
             $sender->send();
 
-            $this->get(SessionInterface::class)->getFlashBag()->add(
+            $this->requestStack->getSession()->getFlashBag()->add(
                 'success',
-                $this->get(TranslatorInterface::class)->trans('diglin.campaign.smscampaign.controller.sent')
+                $this->translator->trans('diglin.campaign.smscampaign.controller.sent')
             );
         } else {
-            $this->get(SessionInterface::class)->getFlashBag()->add(
+            $this->requestStack->getSession()->getFlashBag()->add(
                 'error',
-                $this->get(TranslatorInterface::class)->trans('diglin.campaign.smscampaign.controller.send_disallowed')
+                $this->translator->trans('diglin.campaign.smscampaign.controller.send_disallowed')
             );
         }
 

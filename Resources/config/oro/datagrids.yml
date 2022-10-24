@@ -33,7 +33,7 @@ datagrids:
                 label: oro.campaign.emailcampaign.schedule.label
                 type:          twig
                 frontend_type: html
-                template:      OroCampaignBundle:EmailCampaign:Property/schedule.html.twig
+                template:      '@OroCampaign/EmailCampaign/Property/schedule.html.twig'
             scheduledFor:
                 label: oro.campaign.emailcampaign.scheduled_for.label
                 frontend_type: datetime
@@ -167,7 +167,7 @@ datagrids:
                 label: oro.campaign.emailcampaign.stats.bounce.label
                 type: twig
                 frontend_type: html
-                template: SmsCampaignBundle:SmsCampaign:Property/stats.html.twig
+                template: '@SmsCampaign/SmsCampaign/widget/stats.html.twig'
         filters:
             columns:
                 bounceCount:

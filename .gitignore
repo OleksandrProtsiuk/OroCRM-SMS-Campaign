@@ -48,3 +48,4 @@ phpunit.xml
 /node_modules
 /package.json
 /deploy/servers.yml
+/composer.lock
