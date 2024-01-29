@@ -15,6 +15,8 @@ use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\TransportSettings;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -52,8 +54,10 @@ use Oro\Bundle\UserBundle\Entity\User;
  *      }
  * )
  */
-class SmsCampaign extends ExtendSmsCampaign
+class SmsCampaign extends ExtendSmsCampaign implements ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     const SCHEDULE_MANUAL = 'manual';
     const SCHEDULE_DEFERRED = 'deferred';
 

@@ -13,7 +13,7 @@ use Diglin\Bundle\SmsCampaignBundle\Entity\Repository\SmsCampaignRepository;
 use Diglin\Bundle\SmsCampaignBundle\Entity\SmsCampaign;
 use Diglin\Bundle\SmsCampaignBundle\Model\SmsCampaignSenderBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Oro\Bundle\CronBundle\Command\CronCommandInterface;
+use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
 use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,7 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Command to send scheduled SMS campaigns
  */
-class SendSmsCampaignsCommand extends Command implements CronCommandInterface
+class SendSmsCampaignsCommand extends Command implements CronCommandScheduleDefinitionInterface
 {
     /** @var string */
     protected static $defaultName = 'oro:cron:send-sms-campaigns';

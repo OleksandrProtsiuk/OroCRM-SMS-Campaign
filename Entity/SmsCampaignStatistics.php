@@ -12,6 +12,8 @@ namespace Diglin\Bundle\SmsCampaignBundle\Entity;
 use Diglin\Bundle\SmsCampaignBundle\Model\ExtendSmsCampaignStatistics;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListItem;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -45,8 +47,10 @@ use Oro\Bundle\UserBundle\Entity\User;
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class SmsCampaignStatistics extends ExtendSmsCampaignStatistics
+class SmsCampaignStatistics extends ExtendSmsCampaignStatistics implements ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     /**
      * @var int
      *
