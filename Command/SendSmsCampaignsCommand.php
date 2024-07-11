@@ -22,11 +22,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Command to send scheduled SMS campaigns
  */
+#[\Symfony\Component\Console\Attribute\AsCommand('oro:cron:send-sms-campaigns', 'Send SMS campaigns')]
 class SendSmsCampaignsCommand extends Command implements CronCommandScheduleDefinitionInterface
 {
-    /** @var string */
-    protected static $defaultName = 'oro:cron:send-sms-campaigns';
-
     /** @var ManagerRegistry */
     private $registry;
 
@@ -82,12 +80,12 @@ class SendSmsCampaignsCommand extends Command implements CronCommandScheduleDefi
     /**
      * {@inheritdoc}
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->featureChecker->isFeatureEnabled('campaign')) {
             $output->writeln('The campaign feature is disabled. The command will not run.');
 
-            return 0;
+            return \Symfony\Component\Console\Command\Command::SUCCESS;
         }
 
         $smsCampaigns = $this->getSmsCampaignRepository()->findSmsCampaignsToSend();
@@ -95,7 +93,7 @@ class SendSmsCampaignsCommand extends Command implements CronCommandScheduleDefi
         if (!$smsCampaigns) {
             $output->writeln('<info>No SMS campaigns to send</info>');
 
-            return 0;
+            return \Symfony\Component\Console\Command\Command::SUCCESS;
         }
 
         $output->writeln(
@@ -105,7 +103,7 @@ class SendSmsCampaignsCommand extends Command implements CronCommandScheduleDefi
         $this->send($output, $smsCampaigns);
         $output->writeln(sprintf('<info>Finished SMS campaigns sending</info>'));
 
-        return 0;
+        return \Symfony\Component\Console\Command\Command::SUCCESS;
     }
 
     /**
@@ -129,7 +127,5 @@ class SendSmsCampaignsCommand extends Command implements CronCommandScheduleDefi
      */
     protected function configure()
     {
-        $this
-            ->setDescription('Send SMS campaigns');
     }
 }

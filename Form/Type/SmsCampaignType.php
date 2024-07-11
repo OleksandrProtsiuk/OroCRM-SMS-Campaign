@@ -168,7 +168,7 @@ class SmsCampaignType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'diglin_sms_campaign';
     }

@@ -44,7 +44,7 @@ class SmsTransportSelectType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return ChoiceType::class;
     }
@@ -60,7 +60,7 @@ class SmsTransportSelectType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'diglin_sms_campaign_sms_transport_select';
     }

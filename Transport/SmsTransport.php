@@ -64,7 +64,7 @@ class SmsTransport implements SmsTransportInterface
         $transport = $this->typeRegistry->getTransportTypeBySettingEntity($transportSettings, $channel->getType());
         $transport->init($transportSettings);
 
-        if ($transport instanceof SendSmsInterface || method_exists($transport, 'sendSms')) {
+        if ($transport instanceof SendSmsInterface || \Oro\Bundle\EntityExtendBundle\EntityPropertyInfo::methodExists($transport, 'sendSms')) {
             foreach ($to as $recipientNumber) {
                 $transport->sendSms($recipientNumber, $campaign->getText());
             }

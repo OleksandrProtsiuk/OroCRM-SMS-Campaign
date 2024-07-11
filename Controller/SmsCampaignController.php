@@ -14,8 +14,8 @@ use Diglin\Bundle\SmsCampaignBundle\Form\Handler\SmsCampaignHandler;
 use Diglin\Bundle\SmsCampaignBundle\Form\Type\SmsCampaignType;
 use Diglin\Bundle\SmsCampaignBundle\Model\SmsCampaignSenderBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Attribute\Acl;
+use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
 use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,15 +24,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Serve CRUD of SmsCampaign entity.
- *
- * @Route("/campaign/sms")
  */
+#[\Symfony\Component\Routing\Attribute\Route(path: '/campaign/sms')]
 class SmsCampaignController extends AbstractController
 {
     private FormFactoryInterface $formFactory;
@@ -70,7 +69,7 @@ class SmsCampaignController extends AbstractController
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedServices()
+    public static function getSubscribedServices(): array
     {
         return array_merge(
             parent::getSubscribedServices(),
@@ -86,11 +85,9 @@ class SmsCampaignController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/", name="diglin_sms_campaign_index")
-     * @AclAncestor("diglin_sms_campaign_view")
-     * @Template
-     */
+    #[\Symfony\Component\Routing\Attribute\Route(path: '/', name: 'diglin_sms_campaign_index')]
+    #[AclAncestor('diglin_sms_campaign_view')]
+    #[Template]
     public function indexAction()
     {
         return [
@@ -100,16 +97,10 @@ class SmsCampaignController extends AbstractController
 
     /**
      * Create SMS campaign
-     *
-     * @Route("/create", name="diglin_sms_campaign_create")
-     * @Template("@SmsCampaign/SmsCampaign/update.html.twig")
-     * @Acl(
-     *      id="diglin_sms_campaign_create",
-     *      type="entity",
-     *      permission="CREATE",
-     *      class="SmsCampaignBundle:SmsCampaign"
-     * )
      */
+    #[\Symfony\Component\Routing\Attribute\Route(path: '/create', name: 'diglin_sms_campaign_create')]
+    #[Template('@SmsCampaign/SmsCampaign/update.html.twig')]
+    #[Acl(id: 'diglin_sms_campaign_create', type: 'entity', permission: 'CREATE', class: 'SmsCampaignBundle:SmsCampaign')]
     public function createAction()
     {
         return $this->update(new SmsCampaign());
@@ -154,19 +145,13 @@ class SmsCampaignController extends AbstractController
     /**
      * Edit SMS campaign
      *
-     * @Route("/update/{id}", name="diglin_sms_campaign_update", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @Template
-     * @Acl(
-     *      id="diglin_sms_campaign_update",
-     *      type="entity",
-     *      permission="EDIT",
-     *      class="SmsCampaignBundle:SmsCampaign"
-     * )
      *
      * @param SmsCampaign $entity
-     *
      * @return array
      */
+    #[\Symfony\Component\Routing\Attribute\Route(path: '/update/{id}', name: 'diglin_sms_campaign_update', requirements: ['id' => '\d+'], defaults: ['id' => 0])]
+    #[Template]
+    #[Acl(id: 'diglin_sms_campaign_update', type: 'entity', permission: 'EDIT', class: 'SmsCampaignBundle:SmsCampaign')]
     public function updateAction(SmsCampaign $entity)
     {
         return $this->update($entity);
@@ -175,19 +160,13 @@ class SmsCampaignController extends AbstractController
     /**
      * View SMS campaign
      *
-     * @Route("/view/{id}", name="diglin_sms_campaign_view", requirements={"id"="\d+"})
-     * @Acl(
-     *      id="diglin_sms_campaign_view",
-     *      type="entity",
-     *      permission="VIEW",
-     *      class="SmsCampaignBundle:SmsCampaign"
-     * )
-     * @Template
      *
      * @param SmsCampaign $entity
-     *
      * @return array
      */
+    #[\Symfony\Component\Routing\Attribute\Route(path: '/view/{id}', name: 'diglin_sms_campaign_view', requirements: ['id' => '\d+'])]
+    #[Acl(id: 'diglin_sms_campaign_view', type: 'entity', permission: 'VIEW', class: 'SmsCampaignBundle:SmsCampaign')]
+    #[Template]
     public function viewAction(SmsCampaign $entity)
     {
         $stats = $this->managerRegistry
@@ -226,20 +205,12 @@ class SmsCampaignController extends AbstractController
     }
 
     /**
-     * @Route("/send/{id}", name="diglin_sms_campaign_send", requirements={"id"="\d+"})
-     * @Acl(
-     *      id="diglin_sms_campaign_send",
-     *      type="action",
-     *      label="oro.campaign.acl.send_emails.label",
-     *      description="oro.campaign.acl.send_emails.description",
-     *      group_name="",
-     *      category="marketing"
-     * )
      *
      * @param SmsCampaign $entity
-     *
      * @return RedirectResponse
      */
+    #[\Symfony\Component\Routing\Attribute\Route(path: '/send/{id}', name: 'diglin_sms_campaign_send', requirements: ['id' => '\d+'])]
+    #[Acl(id: 'diglin_sms_campaign_send', type: 'action', label: 'oro.campaign.acl.send_emails.label', description: 'oro.campaign.acl.send_emails.description', group_name: '', category: 'marketing')]
     public function sendAction(SmsCampaign $entity)
     {
         if ($this->isManualSendAllowed($entity)) {

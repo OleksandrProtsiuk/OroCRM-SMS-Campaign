@@ -14,17 +14,14 @@ use Oro\Bundle\CampaignBundle\Entity\TransportSettings;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class SmsTransportSettings extends TransportSettings
 {
     /**
      * @var Channel
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\IntegrationBundle\Entity\Channel")
-     * @ORM\JoinColumn(name="sms_channel_id", referencedColumnName="id", onDelete="SET NULL")
      */
+    #[ORM\ManyToOne(targetEntity: \Oro\Bundle\IntegrationBundle\Entity\Channel::class)]
+    #[ORM\JoinColumn(name: 'sms_channel_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     protected $channel;
 
     /**
